@@ -1,0 +1,69 @@
+{
+	"name": "Spotify",
+	"description": "Sketch plugin to load real SPotify data into documents",
+	"author": "Andrew Fiorillo",
+	"homepage": "",
+	"version": "1.0",
+	"identifier": "com.andrewfiorillo.sketch.spotify",
+	"compatibleVersion": "3",
+	"bundleVersion": "1",
+	"commands": [
+		{
+			"name": "Top Artists",
+			"identifier": "insertPhotosByTopArtists",
+			"shortcut": "",
+			"script": "main.js",
+			"handler": "insertPhotosByTopArtists"
+		},
+		{
+			"name": "Top Albums",
+			"identifier": "insertAlbumArtByTopArtists",
+			"shortcut": "",
+			"script": "main.js",
+			"handler": "insertAlbumArtByTopArtists"
+		},
+		{
+			"name": "Search by Artist...",
+			"identifier": "insertAlbumArtByArtistSearch",
+			"shortcut": "",
+			"script": "main.js",
+			"handler": "insertAlbumArtByArtistSearch"
+		},
+		{
+			"name": "Authenticate",
+			"identifier": "authenticate",
+			"shortcut": "",
+			"script": "main.js",
+			"handler": "authenticate"
+		},
+		{
+			"name" : "Test Action",
+			"identifier": "testAction",
+			"script": "main.js",
+			"handlers": {
+				"actions": {
+					"*": "testAction"
+				}
+    		}
+  		}
+	],
+	
+	"menu": {
+		"items": [
+			{
+				"title": "Artist Photos",
+				"items": [
+					"insertPhotosByTopArtists"
+				]
+			},
+			{
+				"title": "Album Art",
+				"items": [
+					"insertAlbumArtByTopArtists",
+					"insertAlbumArtByArtistSearch"
+				]
+			}
+		]
+		
+	}
+}
