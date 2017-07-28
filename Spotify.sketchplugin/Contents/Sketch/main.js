@@ -122,7 +122,7 @@ function insertAlbumArtByTopArtists(context) {
 
 
 // ----------------------------------------------------------------------------------------------------
-// etc.
+// Get album art via artist search
 // ----------------------------------------------------------------------------------------------------
 
 function insertAlbumArtByArtistSearch(context) {
@@ -184,24 +184,24 @@ function insertAlbumArtByArtistSearch(context) {
 
 // Just for refernence: Insert Usernames
 
-function insertUsernames(context, demo) {
+// function insertUsernames(context, demo) {
 	
-	var selection = context.selection;
-	var numLayers = selection.length;
+// 	var selection = context.selection;
+// 	var numLayers = selection.length;
 
-	if (numLayers > 0 && selection[0].class() == "MSTextLayer") {
+// 	if (numLayers > 0 && selection[0].class() == "MSTextLayer") {
 		
-		var users = getUsers(context, demo);
+// 		var users = getUsers(context, demo);
 		
-		for (var i = 0; i < numLayers; i++) {
-			var layer = selection[i];
-			var user = users[i];
-			var username = "" + user.username;
-			layer.setStringValue(username);
-			layer.adjustFrameToFit();
-			layer.setName(username);
-		}
+// 		for (var i = 0; i < numLayers; i++) {
+// 			var layer = selection[i];
+// 			var user = users[i];
+// 			var username = "" + user.username;
+// 			layer.setStringValue(username);
+// 			layer.adjustFrameToFit();
+// 			layer.setName(username);
+// 		}
 		
-	} else { alert("Select a text layer!") }
+// 	} else { alert("Select a text layer!") }
 	
-}
+// }
