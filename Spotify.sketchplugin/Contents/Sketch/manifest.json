@@ -56,6 +56,28 @@
 			"handler": "authenticate"
 		},
 		{
+			"name": "Sign In",
+			"identifier": "authorize",
+			"shortcut": "",
+			"script": "main.js",
+			"handler": "authorize"
+		},
+		{
+			"name": "Sign Out",
+			"identifier": "logout",
+			"shortcut": "",
+			"script": "main.js",
+			"handler": "logout"
+		},
+		{
+			"name": "Test",
+			"identifier": "testCommand",
+			"shortcut": "",
+			"script": "main.js",
+			"handler": "testCommand"
+		},
+		
+		{
 			"name" : "Test Action",
 			"identifier": "testAction",
 			"script": "main.js",
@@ -85,7 +107,10 @@
 					"insertAlbumArtByNewReleases",
 					"insertAlbumArtByArtistSearch"
 				]
-			}
+			},
+			"authorize",
+			"logout",
+			"testCommand"
 		]
 		
 	}

@@ -205,3 +205,25 @@ function insertAlbumArtByArtistSearch(context) {
 
 }
 
+
+// ------------------------------------------------------------------------------------------------
+// Test User Data
+// ------------------------------------------------------------------------------------------------
+
+function testCommand(context) {
+	
+	// log("MY TOP ARTISTS:")
+	
+	spotifyAPI("/v1/me/playlists", function(res) {
+		results = res.items
+		log(res);
+		return;
+		for (var i = 0; i < results.length; i++) {
+			log(results[i].name)
+		};
+			
+	});
+	
+}
+
+

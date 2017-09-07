@@ -58,9 +58,6 @@ function getPreferences(key) {
 	
 	if (!userDefaults.dictionaryForKey(pluginIdentifier)) {
 		var defaultPreferences = NSMutableDictionary.alloc().init();
-		
-		defaultPreferences.setObject_forKey("value1", "key1");
-		defaultPreferences.setObject_forKey("value2", "key2");
 
 		userDefaults.setObject_forKey(defaultPreferences, pluginIdentifier);
 		userDefaults.synchronize();
@@ -83,15 +80,74 @@ function setPreferences(key, value) {
 	userDefaults.synchronize();
 }
 
+function removeKey(key) {
+	
+	var userDefaults = NSUserDefaults.standardUserDefaults();
+	
+	if (!userDefaults.dictionaryForKey(pluginIdentifier)) {
+		var preferences = NSMutableDictionary.alloc().init();
+	} else {
+		var preferences = NSMutableDictionary.dictionaryWithDictionary(userDefaults.dictionaryForKey(pluginIdentifier));
+	}
+	
+	preferences.removeObjectForKey(key);
+	userDefaults.setObject_forKey(preferences, pluginIdentifier);
+	userDefaults.synchronize();
+}
+
 
 // ----------------------------------------------------------------------------------------------------
 // Authenticate with Spotify
 // ----------------------------------------------------------------------------------------------------
 
 
+function authorize(context) {
+	
+	COScript.currentCOScript().setShouldKeepAround_(true);
+	
+	var URL = "https://accounts.spotify.com/authorize?client_id=0e131740c91141e1b586039d410b4160&response_type=code&redirect_uri=http://spotify.com&scope=user-follow-read%20user-library-read%20user-top-read%20user-read-recently-played&show_dialog=true";
+	
+	var frame = NSMakeRect(0,0,400,520)
+	var webView = WebView.alloc().initWithFrame(frame);
+	var windowObject = webView.windowScriptObject();
+	var authorized = false;
+	
+	var delegate = new MochaJSDelegate({
+		"webView:didFinishLoadForFrame:": (function(webView, webFrame) {
+			var location = windowObject.evaluateWebScript("window.location.toString()");
+			
+			if (authorized == false && location.indexOf("code=") >= 0) {
+				authorized = true;
+				var code = location.split("=")[1];
+				setPreferences("auth_code", code);
+				panel.close();
+				authenticate();
+				COScript.currentCOScript().setShouldKeepAround_(false);
+				return;
+			} else {
+				log(location);
+			}			
+		})
+	});
+
+	webView.setFrameLoadDelegate_(delegate.getClassInstance());
+	webView.mainFrame().loadRequest(NSURLRequest.requestWithURL(NSURL.URLWithString(URL)));
+	
+	var mask = NSTitledWindowMask + NSClosableWindowMask + NSMiniaturizableWindowMask + NSResizableWindowMask + NSUtilityWindowMask;
+	
+	var panel = NSPanel.alloc().initWithContentRect_styleMask_backing_defer(frame, mask, NSBackingStoreBuffered, true);
+	
+	panel.contentView().addSubview(webView);
+	panel.makeKeyAndOrderFront(null);
+	panel.center();
+}
+
+
 function authenticate() {
 	
-	var url = "https://accounts.spotify.com/api/token?grant_type=client_credentials"
+	var auth_code = getPreferences("auth_code");
+	
+	var url = "https://accounts.spotify.com/api/token?grant_type=authorization_code&code=" + auth_code + "&redirect_uri=http://spotify.com";
 	var requestURL = NSURL.URLWithString(url);
 	var request = NSMutableURLRequest.alloc().initWithURL(requestURL).autorelease();
 	
@@ -108,9 +164,37 @@ function authenticate() {
 	var res = NSJSONSerialization.JSONObjectWithData_options_error(response, 0, null);
 	
 	// store auth token locally
-	setPreferences("spotify_auth", res.access_token);
+	setPreferences("auth_token", res.access_token);
 	
 }
+
+function logout(context) {
+	removeKey("auth_code");
+	removeKey("auth_token");
+}
+
+// function authenticate() {
+	
+// 	var url = "https://accounts.spotify.com/api/token?grant_type=client_credentials"
+// 	var requestURL = NSURL.URLWithString(url);
+// 	var request = NSMutableURLRequest.alloc().initWithURL(requestURL).autorelease();
+	
+// 	[request setHTTPMethod:@"POST"];
+	
+// 	// Set headers including credentials to retrieve auth token
+// 	request.setValue_forHTTPHeaderField("application/json", "Accept");
+// 	request.setValue_forHTTPHeaderField("application/x-www-form-urlencoded", "Content-Type");
+// 	request.setValue_forHTTPHeaderField("curl/7.37.0", "User-Agent");
+// 	request.setValue_forHTTPHeaderField("Basic MGUxMzE3NDBjOTExNDFlMWI1ODYwMzlkNDEwYjQxNjA6NzM0YjYyMmRiY2QzNDMwMmI2MjZkZDdhNjMyMTI2Yzg=", "Authorization");
+	
+// 	// Send Request and parse JSON from response
+// 	var response = NSURLConnection.sendSynchronousRequest_returningResponse_error(request, null, null);
+// 	var res = NSJSONSerialization.JSONObjectWithData_options_error(response, 0, null);
+	
+// 	// store auth token locally
+// 	setPreferences("spotify_auth", res.access_token);
+	
+// }
 
 
 // ----------------------------------------------------------------------------------------------------
@@ -123,12 +207,15 @@ function spotifyAPI(endpoint, callback) {
 	var url = "https://api.spotify.com" + endpoint;
 	var requestURL = NSURL.URLWithString(url);
 	var request = NSMutableURLRequest.alloc().initWithURL(requestURL).autorelease();
+	var end = endpoint;
+	var call = callback;
 	
 	// Use saved auth token. If ghere is none, get one
-	var auth_token = getPreferences("spotify_auth");
+	var auth_token = getPreferences("auth_token");
 	if (!auth_token) {
-		authenticate();
-		auth_token = getPreferences("spotify_auth");
+		authorize();
+		return;
+		// auth_token = getPreferences("auth_token");
 	}
 	
 	// Set request Headers, including auth token
@@ -143,16 +230,20 @@ function spotifyAPI(endpoint, callback) {
 	var response = NSURLConnection.sendSynchronousRequest_returningResponse_error(request, null, null);
 	var res = NSJSONSerialization.JSONObjectWithData_options_error(response, 0, null);
 	
+	log("spotifyAPI response:")
+	log(res);
+	
 	// Get new auth token if expired
 	if (res.error && res.error.status == 401) {
 		authenticate();
 		spotifyAPI(endpoint, callback);
+	} else if (res.error) {
+		authorize();
+		return;
+	} else {
+		return callback(res);	
 	}
-	
-	return callback(res);
 }
-
-
 
 
 // ----------------------------------------------------------------------------------------------------
