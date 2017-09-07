@@ -4,10 +4,11 @@
 	"author": "Andrew Fiorillo",
 	"homepage": "",
 	"version": "1.0",
-	"identifier": "com.andrewfiorillo.sketch.spotify",
+	"identifier": "com.sketch.spotify",
 	"compatibleVersion": "3",
 	"bundleVersion": "1",
 	"commands": [
+	
 		{
 			"name": "Top Artists",
 			"identifier": "insertPhotosByTopArtists",
@@ -16,11 +17,27 @@
 			"handler": "insertPhotosByTopArtists"
 		},
 		{
+			"name": "Search by Artist...",
+			"identifier": "insertArtistsPhotosByArtistSearch",
+			"shortcut": "",
+			"script": "main.js",
+			"handler": "insertArtistsPhotosByArtistSearch"
+		},
+		
+		
+		{
 			"name": "Top Albums",
 			"identifier": "insertAlbumArtByTopArtists",
 			"shortcut": "",
 			"script": "main.js",
 			"handler": "insertAlbumArtByTopArtists"
+		},
+		{
+			"name": "New Releases",
+			"identifier": "insertAlbumArtByNewReleases",
+			"shortcut": "",
+			"script": "main.js",
+			"handler": "insertAlbumArtByNewReleases"
 		},
 		{
 			"name": "Search by Artist...",
@@ -29,6 +46,8 @@
 			"script": "main.js",
 			"handler": "insertAlbumArtByArtistSearch"
 		},
+		
+		
 		{
 			"name": "Authenticate",
 			"identifier": "authenticate",
@@ -46,6 +65,8 @@
 				}
     		}
   		}
+  		
+  		
 	],
 	
 	"menu": {
@@ -53,13 +74,15 @@
 			{
 				"title": "Artist Photos",
 				"items": [
-					"insertPhotosByTopArtists"
+					"insertPhotosByTopArtists",
+					"insertArtistsPhotosByArtistSearch"
 				]
 			},
 			{
 				"title": "Album Art",
 				"items": [
 					"insertAlbumArtByTopArtists",
+					"insertAlbumArtByNewReleases",
 					"insertAlbumArtByArtistSearch"
 				]
 			}
