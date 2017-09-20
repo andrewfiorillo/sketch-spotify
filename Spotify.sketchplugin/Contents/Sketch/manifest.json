@@ -57,17 +57,17 @@
 		},
 		{
 			"name": "Sign In",
-			"identifier": "authorize",
+			"identifier": "signin",
 			"shortcut": "",
 			"script": "main.js",
-			"handler": "authorize"
+			"handler": "signin"
 		},
 		{
 			"name": "Sign Out",
-			"identifier": "logout",
+			"identifier": "signout",
 			"shortcut": "",
 			"script": "main.js",
-			"handler": "logout"
+			"handler": "signout"
 		},
 		{
 			"name": "Test",
@@ -88,7 +88,6 @@
     		}
   		}
   		
-  		
 	],
 	
 	"menu": {
@@ -108,8 +107,9 @@
 					"insertAlbumArtByArtistSearch"
 				]
 			},
-			"authorize",
-			"logout",
+			"-",
+			"signin",
+			"signout",
 			"testCommand"
 		]
 		

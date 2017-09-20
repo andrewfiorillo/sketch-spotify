@@ -64,7 +64,7 @@ function insertArtistsPhotosByArtistSearch(context) {
 	var selection = context.selection;
 	if (selection.length < 1) { alert("Select one or more layers!"); return; }
 	
-	var keyword = [doc askForUserInput:"Search for an artist" initialValue:"Kanye"];
+	var keyword = [doc askForUserInput:"Search for an artist" initialValue:"Yeasayer"];
 	
 	var endpoint = "/v1/search?q=" + encodeURIComponent(keyword) + "&type=artist";
 	
@@ -173,7 +173,7 @@ function insertAlbumArtByArtistSearch(context) {
 	var selection = context.selection;
 	if (selection.length < 1) { alert("Select one or more layers!"); return; }
 	
-	var keyword = [doc askForUserInput:"Search for an artist" initialValue:"Kanye"];
+	var keyword = [doc askForUserInput:"Search for an artist" initialValue:"Yeasayer"];
 	
 	var endpoint = "/v1/search?q=" + encodeURIComponent(keyword) + "&type=artist";
 	
@@ -214,9 +214,9 @@ function testCommand(context) {
 	
 	// log("MY TOP ARTISTS:")
 	
-	spotifyAPI("/v1/me/playlists", function(res) {
+	spotifyAPI("/v1/me/playlists?limit=50&offset=0", function(res) {
 		results = res.items
-		log(res);
+		log(res.items);
 		return;
 		for (var i = 0; i < results.length; i++) {
 			log(results[i].name)
@@ -227,3 +227,28 @@ function testCommand(context) {
 }
 
 
+
+
+// Just for refernence: Insert Usernames
+
+// function insertUsernames(context, demo) {
+	
+// 	var selection = context.selection;
+// 	var numLayers = selection.length;
+
+// 	if (numLayers > 0 && selection[0].class() == "MSTextLayer") {
+		
+// 		var users = getUsers(context, demo);
+		
+// 		for (var i = 0; i < numLayers; i++) {
+// 			var layer = selection[i];
+// 			var user = users[i];
+// 			var username = "" + user.username;
+// 			layer.setStringValue(username);
+// 			layer.adjustFrameToFit();
+// 			layer.setName(username);
+// 		}
+		
+// 	} else { alert("Select a text layer!") }
+	
+// }
