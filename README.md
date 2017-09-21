@@ -8,13 +8,13 @@ A Sketch plugin for loading Spotify content from the web api into Sketch documen
 
 Select one or more vector layers. This uses the US top 50 playlist from the Spotify user account, pulling the photo of the artist for each track in the playlist. For each vector layer in your selection, it adds an image fill which contains the artist's photo.
 
-![Top Artists Photos](./assets/sketch-top-artists.gif)
+<img src="./assets/sketch-top-artists.gif" />
 
 ### Artist Search
 
 Select a vector layer, and run the command. Type the name of an artist whose photo you would like to use, and it will grab the closest match. If multiple artists match, it will return the artist with the highest popularity. For example, "Frank Sinatra" will return the photo for Frank Sinatra, but "Frank" will return the photo for Frank Ocean. An image fill will be set on your selected layer with the photo of the artist returned.
 
-![Photos via Artist Search](./assets/sketch-artist-photo-search.gif)
+<img src="./assets/sketch-artist-photo-search.gif" />
 
 
 ## Album Art
