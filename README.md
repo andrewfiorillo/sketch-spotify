@@ -15,9 +15,6 @@ Select a vector layer, and run the command. Type the name of an artist whose pho
 
 <img src="./assets/sketch-artist-photo-search.gif" />
 
-
-## Album Art
-
 ### Album Art by Top Albums
 
 Select one or more vector layers. This uses the US top 50 playlist from the Spotify user account, pulling the album art for each track in the playlist. For each vector layer in your selection, it adds an image fill of the album art.
