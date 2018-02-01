@@ -40,7 +40,7 @@ function setImage(layer, imageData) {
 	var coll = fill.documentData().images();
 	
 	fill.setFillType(4);
-	fill.setImage(MSImageData.alloc().initWithImageConvertingColorSpace(image));
+	fill.setImage(MSImageData.alloc().initWithImage(image));
 	fill.setPatternFillType(1);
 }
 
