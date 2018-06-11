@@ -175,28 +175,35 @@ function insertAlbumArtByArtistSearch(context) {
 	
 	var keyword = [doc askForUserInput:"Search for an artist" initialValue:"Yeasayer"];
 	
+	// Search for artist
 	var endpoint = "/v1/search?q=" + encodeURIComponent(keyword) + "&type=artist";
 	
 	spotifyAPI(endpoint, function(res) {
 		
+		// Sort by popularity
 		var results = toJSArray(res.artists.items).sort(function(a, b) {
 			return b.popularity - a.popularity;
 		});
 		
-		spotifyAPI("/v1/artists/" + results[0].id + "/albums?limit=50&market=US&album=album&limit=50", function(res) {
+		// Get albums of most popular artist matching search criteria
+		spotifyAPI("/v1/artists/" + results[0].id + "/albums?limit=50&market=US&include_groups=album,single", function(res) {
 			
 			var albums = res.items;
 			var numAlbums = albums.length;
 			var max = selection.length;
 			
 			if (max > numAlbums) { max = numAlbums }
-
-			for (var i = 0; i < max; i++) {
+				
+			// Randomize
+			albums = toJSArray(albums).sort(function(a, b) {
+				return 0.5 - Math.random();
+			});
 			
+			// Loop through slection and set pattern fills
+			for (var i = 0; i < max; i++) {
 				ajax(albums[i].images[0].url, function(imageData) {	
 					setImage(selection[i], imageData);
 				});
-				
 			}
 			
 		});
