@@ -40,6 +40,13 @@
 			"handler": "insertAlbumArtByNewReleases"
 		},
 		{
+			"name": "Discover Weekly",
+			"identifier": "insertAlbumArtByDiscoverWeekly",
+			"shortcut": "",
+			"script": "main.js",
+			"handler": "insertAlbumArtByDiscoverWeekly"
+		},
+		{
 			"name": "Search by Artist...",
 			"identifier": "insertAlbumArtByArtistSearch",
 			"shortcut": "",
@@ -104,13 +111,13 @@
 				"items": [
 					"insertAlbumArtByTopArtists",
 					"insertAlbumArtByNewReleases",
+					"insertAlbumArtByDiscoverWeekly",
 					"insertAlbumArtByArtistSearch"
 				]
 			},
 			"-",
 			"signin",
-			"signout",
-			"testCommand"
+			"signout"
 		]
 		
 	}

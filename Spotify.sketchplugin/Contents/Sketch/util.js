@@ -125,7 +125,8 @@ function authorize() {
 	
 	COScript.currentCOScript().setShouldKeepAround_(true);
 	
-	var URL = "https://accounts.spotify.com/authorize?client_id=0e131740c91141e1b586039d410b4160&response_type=code&redirect_uri=http://spotify.com&scope=playlist-read-private%20user-follow-read%20user-library-read%20user-top-read%20user-read-recently-played&show_dialog=true";
+	var URL = "https://accounts.spotify.com/authorize?client_id=0e131740c91141e1b586039d410b4160&response_type=code&redirect_uri=http://spotify.com&scope=playlist-read-private%20playlist-read-collaborative%20user-follow-read%20user-library-read%20user-top-read%20user-read-recently-played&show_dialog=true";
+
 	
 	var frame = NSMakeRect(0,0,400,520)
 	var webView = WebView.alloc().initWithFrame(frame);

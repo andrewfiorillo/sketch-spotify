@@ -163,6 +163,46 @@ function insertAlbumArtByNewReleases(context) {
 
 
 // ------------------------------------------------------------------------------------------------
+// Get album art for Discover Weekly
+// ------------------------------------------------------------------------------------------------
+
+
+function insertAlbumArtByDiscoverWeekly(context) {
+	
+	var selection = context.selection;
+	if (selection.length < 1) { alert("Select one or more layers!"); return; }
+	
+	spotifyAPI("/v1/me/playlists", function(res) {
+		
+		// Get Discover Weekly playlist ID		
+		var id = res.items.find(function(playlist) {
+  			return playlist.name == "Discover Weekly";
+		}).id;
+
+		// Get Discover Weekly tracks
+		spotifyAPI("/v1/playlists/" + id + "/tracks?fields=items.track(album)", function(res) {
+
+			var tracks = res.items;
+			var numTracks = tracks.length;
+			var max = selection.length;
+				
+			if (max > numTracks) { max = numTracks }
+			
+			// Loop through slection and set pattern fills
+			for (var i = 0; i < max; i++) {
+				ajax(tracks[i].track.album.images[0].url, function(imageData) {
+					setImage(selection[i], imageData);
+				});
+			}
+
+		});
+			
+	});
+
+}
+
+
+// ------------------------------------------------------------------------------------------------
 // Get album art via artist search
 // ------------------------------------------------------------------------------------------------
 
@@ -232,30 +272,3 @@ function testCommand(context) {
 	});
 	
 }
-
-
-
-
-// Just for refernence: Insert Usernames
-
-// function insertUsernames(context, demo) {
-	
-// 	var selection = context.selection;
-// 	var numLayers = selection.length;
-
-// 	if (numLayers > 0 && selection[0].class() == "MSTextLayer") {
-		
-// 		var users = getUsers(context, demo);
-		
-// 		for (var i = 0; i < numLayers; i++) {
-// 			var layer = selection[i];
-// 			var user = users[i];
-// 			var username = "" + user.username;
-// 			layer.setStringValue(username);
-// 			layer.adjustFrameToFit();
-// 			layer.setName(username);
-// 		}
-		
-// 	} else { alert("Select a text layer!") }
-	
-// }
