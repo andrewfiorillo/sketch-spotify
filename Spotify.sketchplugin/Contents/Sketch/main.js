@@ -123,16 +123,21 @@ function insertAlbumArtByTopArtists(context) {
 		})
 		
 		// Randomize
-		tracks = tracks.sort(function(a, b) {
+		uniqueAlbums = uniqueAlbums.sort(function(a, b) {
 			return 0.5 - Math.random();
 		});
 		
-		// Loop through slection and set pattern fills
-		for (var i = 0; i < max; i++) {
-			ajax(tracks[i].track.album.images[0].url, function(imageData) {	
+		 // Loop through selection and set pattern fills
+		 // If the selection length is greater than the albums length, fill the albums again from the start.
+		 for (var i = 0, albumIndex = 0; i < selection.length; i++, albumIndex++) {
+			if (albumIndex === uniqueAlbums.length - 1) {
+				albumIndex = 0;
+			}
+
+			ajax(uniqueAlbums[albumIndex].artwork, function(imageData) {	
 				setImage(selection[i], imageData);
 			});
-		}	
+		}
 	
 	});
 	
