@@ -101,14 +101,14 @@ function insertAlbumArtByTopArtists(context) {
 	
 	spotifyAPI(endpoint, function(res) {
 		
-		var tracks = res.items;
+		var tracks = toJSArray(res.items);
 		var numTracks = tracks.length;
 		var max = selection.length;
 			
 		if (max > numTracks) { max = numTracks }
 		
 		// Randomize
-		tracks = toJSArray(tracks).sort(function(a, b) {
+		tracks = tracks.sort(function(a, b) {
 			return 0.5 - Math.random();
 		});
 		
