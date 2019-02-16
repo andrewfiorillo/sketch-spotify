@@ -103,13 +103,13 @@ function insertAlbumArtByTopArtists(context) {
 		var tracks = toJSArray(res.items);
 		
 		// Create a new array filled with the tracks album name & artwork
-		var albums = tracks.map(item => { 
+		var albums = tracks.map(function(item) { 
 			return { name: item.track.album.name.UTF8String(), artworkUrl: item.track.album.images[0].url.UTF8String() }
 		});
 
 		// Filter out duplicate albums by their name
 		var albumNames = [];
-		var uniqueAlbums = albums.filter(album => {
+		var uniqueAlbums = albums.filter(function(album) {
 			if (albumNames.indexOf(album.name) < 0) {
 				albumNames.push(album.name);
 				return true;
