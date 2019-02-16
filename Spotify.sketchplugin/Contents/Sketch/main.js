@@ -100,27 +100,40 @@ function insertAlbumArtByTopArtists(context) {
 	var endpoint = "/v1/users/spotifycharts/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks";
 	
 	spotifyAPI(endpoint, function(res) {
+		var tracks = toJSArray(res.items);
 		
-		var tracks = res.items;
-		var numTracks = tracks.length;
-		var max = selection.length;
-			
-		if (max > numTracks) { max = numTracks }
+		// Create a new array filled with the tracks album name & artwork
+		var albums = tracks.map(function(item) { 
+			return { name: item.track.album.name.UTF8String(), artworkUrl: item.track.album.images[0].url.UTF8String() }
+		});
+
+		// Filter out duplicate albums by their name
+		var albumNames = [];
+		var uniqueAlbums = albums.filter(function(album) {
+			if (albumNames.indexOf(album.name) < 0) {
+				albumNames.push(album.name);
+				return true;
+			}
+			return false;
+		})
 		
 		// Randomize
-		tracks = toJSArray(tracks).sort(function(a, b) {
+		uniqueAlbums = uniqueAlbums.sort(function(a, b) {
 			return 0.5 - Math.random();
 		});
 		
-		// Loop through slection and set pattern fills
-		for (var i = 0; i < max; i++) {
-			ajax(tracks[i].track.album.images[0].url, function(imageData) {	
+		// Loop through selection and set pattern fills
+		// If the selection length is greater than the albums length, fill the albums again from the start.
+		for (var i = 0, albumIndex = 0; i < selection.length; i++, albumIndex++) {
+			if (albumIndex === uniqueAlbums.length - 1) {
+				albumIndex = 0;
+			}
+
+			ajax(uniqueAlbums[albumIndex].artworkUrl, function(imageData) {	
 				setImage(selection[i], imageData);
 			});
-		}	
-	
+		}
 	});
-	
 }
 
 
