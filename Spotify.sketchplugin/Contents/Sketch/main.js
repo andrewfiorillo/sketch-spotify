@@ -102,10 +102,6 @@ function insertAlbumArtByTopArtists(context) {
 	spotifyAPI(endpoint, function(res) {
 		
 		var tracks = toJSArray(res.items);
-		var numTracks = tracks.length;
-		var max = selection.length;
-			
-		if (max > numTracks) { max = numTracks }
 		
 		// Create a new array filled with the tracks album name & artwork
 		var albums = tracks.map(item => { 
