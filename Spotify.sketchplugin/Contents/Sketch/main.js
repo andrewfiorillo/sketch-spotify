@@ -111,6 +111,16 @@ function insertAlbumArtByTopArtists(context) {
 		var albums = tracks.map(item => { 
 			return { name: item.track.album.name.UTF8String(), artwork: item.track.album.images[0].url.UTF8String() }
 		});
+
+		// Filter out duplicate albums by their name
+		var albumNames = [];
+		var uniqueAlbums = albums.filter(album => {
+			if (albumNames.indexOf(album.name) < 0) {
+				albumNames.push(album.name);
+				return true;
+			}
+			return false;
+		})
 		
 		// Randomize
 		tracks = tracks.sort(function(a, b) {
