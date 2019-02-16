@@ -100,7 +100,6 @@ function insertAlbumArtByTopArtists(context) {
 	var endpoint = "/v1/users/spotifycharts/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks";
 	
 	spotifyAPI(endpoint, function(res) {
-		
 		var tracks = toJSArray(res.items);
 		
 		// Create a new array filled with the tracks album name & artwork
@@ -123,9 +122,9 @@ function insertAlbumArtByTopArtists(context) {
 			return 0.5 - Math.random();
 		});
 		
-		 // Loop through selection and set pattern fills
-		 // If the selection length is greater than the albums length, fill the albums again from the start.
-		 for (var i = 0, albumIndex = 0; i < selection.length; i++, albumIndex++) {
+		// Loop through selection and set pattern fills
+		// If the selection length is greater than the albums length, fill the albums again from the start.
+		for (var i = 0, albumIndex = 0; i < selection.length; i++, albumIndex++) {
 			if (albumIndex === uniqueAlbums.length - 1) {
 				albumIndex = 0;
 			}
@@ -134,9 +133,7 @@ function insertAlbumArtByTopArtists(context) {
 				setImage(selection[i], imageData);
 			});
 		}
-	
 	});
-	
 }
 
 
