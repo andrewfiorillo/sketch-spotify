@@ -107,6 +107,11 @@ function insertAlbumArtByTopArtists(context) {
 			
 		if (max > numTracks) { max = numTracks }
 		
+		// Create a new array filled with the tracks album name & artwork
+		var albums = tracks.map(item => { 
+			return { name: item.track.album.name.UTF8String(), artwork: item.track.album.images[0].url.UTF8String() }
+		});
+		
 		// Randomize
 		tracks = tracks.sort(function(a, b) {
 			return 0.5 - Math.random();
