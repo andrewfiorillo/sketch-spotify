@@ -104,7 +104,7 @@ function insertAlbumArtByTopArtists(context) {
 		
 		// Create a new array filled with the tracks album name & artwork
 		var albums = tracks.map(item => { 
-			return { name: item.track.album.name.UTF8String(), artwork: item.track.album.images[0].url.UTF8String() }
+			return { name: item.track.album.name.UTF8String(), artworkUrl: item.track.album.images[0].url.UTF8String() }
 		});
 
 		// Filter out duplicate albums by their name
@@ -129,7 +129,7 @@ function insertAlbumArtByTopArtists(context) {
 				albumIndex = 0;
 			}
 
-			ajax(uniqueAlbums[albumIndex].artwork, function(imageData) {	
+			ajax(uniqueAlbums[albumIndex].artworkUrl, function(imageData) {	
 				setImage(selection[i], imageData);
 			});
 		}
